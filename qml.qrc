@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/FileView.qml</file>
+        <file>qml/main.qml</file>
+        <file>qml/MyToolTip.qml</file>
+        <file>qml/MyButton.qml</file>
+        <file>qml/GlowRectangle.qml</file>
+        <file>qml/FileProgress.qml</file>
+        <file>qml/MoveMouseArea.qml</file>
+        <file>qml/ResizeMouseArea.qml</file>
+    </qresource>
+</RCC>
