@@ -52,7 +52,6 @@ public:
     QQmlListProperty<FileInfo> readFiles();
     QQmlListProperty<FileInfo> writeFiles();
 
-
 public slots:
     void addReadFile(const QString &fileName, qint32 totalSize);
     void updateReadFile(const QString &fileName, qint32 offset);

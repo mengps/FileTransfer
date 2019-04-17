@@ -1,3 +1,4 @@
+#include "discoverconnection.h"
 #include "fileblock.h"
 #include "filemanager.h"
 #include "filereceiver.h"

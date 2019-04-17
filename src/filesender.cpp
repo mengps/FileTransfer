@@ -63,6 +63,13 @@ void FileSender::sendFile(const QUrl &url)
 
 void FileSender::requestNewConnection()
 {
-    connectToHost(QHostAddress::LocalHost, 43800);
+    connectToHost(m_accessPoint.address, 43800);
     waitForConnected(5000);
+}
+
+void FileSender::setAccessPoint(const AccessPoint &ap)
+{
+    if (m_accessPoint != ap)
+        m_accessPoint = ap;
+    requestNewConnection();
 }

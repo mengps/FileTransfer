@@ -18,7 +18,8 @@ HEADERS += \
     src/filereceiver.h \
     src/filesender.h \
     src/filetransfer.h \
-    src/filemanager.h
+    src/filemanager.h \
+    src/discoverconnection.h
 
 SOURCES += \
     src/fileapi.cpp \
@@ -27,7 +28,8 @@ SOURCES += \
     src/filesender.cpp \
     src/filetransfer.cpp \
     src/main.cpp \
-    src/filemanager.cpp
+    src/filemanager.cpp \
+    src/discoverconnection.cpp
 
 RESOURCES += qml.qrc
 

@@ -1,3 +1,4 @@
+#include "discoverconnection.h"
 #include "fileapi.h"
 #include "filemanager.h"
 #include "filetransfer.h"
@@ -17,7 +18,8 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("fileApi", new FileApi);
     engine.rootContext()->setContextProperty("fileManager", FileManager::instance());
-    engine.rootContext()->setContextProperty("fileTransfer", new FileTransfer);
+    engine.rootContext()->setContextProperty("fileTransfer", FileTransfer::instance());
+    engine.rootContext()->setContextProperty("discoverCon", DiscoverConnection::instance());
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;
