@@ -20,7 +20,12 @@ DiscoverConnection::~DiscoverConnection()
 
 }
 
-AccessPoint DiscoverConnection::getAccessPoint(const QString &name) const
+QString DiscoverConnection::getName(const QHostAddress &address) const
+{
+    return m_accessPoints.key(address);
+}
+
+QHostAddress DiscoverConnection::getAddress(const QString &name) const
 {
     return m_accessPoints[name];
 }
@@ -41,6 +46,7 @@ void DiscoverConnection::setName(const QString &name)
 
 void DiscoverConnection::discover()
 {
+    m_accessPoints.clear();
     writeDatagram("[DISCOVER]", QHostAddress::Broadcast, 43801);
 }
 
@@ -59,9 +65,8 @@ void DiscoverConnection::processDatagram()
             if (datagram.data().left(8) == "[NAME]##")
             {
                 QString name = QString::fromLocal8Bit(datagram.data().mid(8));
-                AccessPoint ap = { datagram.senderAddress(), name, quint16(datagram.senderPort()) };
-                qDebug() << ap.address;
-                m_accessPoints[name] = ap;
+                m_accessPoints[name] = datagram.senderAddress();
+                qDebug() << name << datagram.senderAddress();
                 emit newAccessPoint(name);
             }
         }

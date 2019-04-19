@@ -1,39 +1,16 @@
-#include "discoverconnection.h"
 #include "fileblock.h"
 #include "filemanager.h"
-#include "filereceiver.h"
+#include "transfersocket.h"
 
-#include <QApplication>
-#include <QDir>
-#include <QTime>
-#include <QThread>
-#include <QTcpSocket>
+#include <QtConcurrent>
+#include <QFile>
+#include <QFileInfo>
+#include <QHostAddress>
+#include <QQmlFile>
 
-ConnectionManager::ConnectionManager(QObject *parent)
-    : QTcpServer (parent)
-{
-    listen(QHostAddress::Any, 43800);
-}
+const int maxBlockSize = 1024;
 
-ConnectionManager::~ConnectionManager()
-{
-
-}
-
-void ConnectionManager::incomingConnection(qintptr handle)
-{
-    QThread *thread = new QThread;
-    connect(thread, &QThread::finished, thread, &QThread::deleteLater);
-    FileReceiver *receiver = new FileReceiver;
-    if (!receiver->setSocketDescriptor(handle))
-        qDebug() << "Socket Error: " << receiver->errorString();
-    else qDebug() << "Connected Socket: " << handle;
-    receiver->moveToThread(thread);
-    thread->start();
-}
-
-FileReceiver::FileReceiver(QObject *parent)
-    : QTcpSocket (parent)
+TransferSocket::TransferSocket()
 {
     m_cachePath = qApp->applicationDirPath() + "/FileRecv/";
     QDir dir;
@@ -49,13 +26,67 @@ FileReceiver::FileReceiver(QObject *parent)
     });
 }
 
-FileReceiver::~FileReceiver()
+TransferSocket::~TransferSocket()
 {
 
 }
 
-void FileReceiver::processRecvBlock()
-{  
+void TransferSocket::requestNewConnection()
+{
+    abort();
+    connectToHost(m_destAddress, 43800);
+    waitForConnected(5000);
+}
+
+void TransferSocket::setDestAddress(const QHostAddress &address)
+{
+    if (m_destAddress != address)
+        m_destAddress = address;
+    requestNewConnection();
+}
+
+void TransferSocket::sendFile(const QUrl &url)
+{
+    if (state() != SocketState::ConnectedState)
+        requestNewConnection();
+
+    QtConcurrent::run([this, url]()
+    {
+        QTime time;
+        time.start();
+        QFile file(QQmlFile::urlToLocalFileOrQrc(url));
+        file.open(QIODevice::ReadOnly);
+
+        qint32 offset = 0;
+        qint32 totalSize = qint32(file.size());
+        QString fileName = QFileInfo(QQmlFile::urlToLocalFileOrQrc(url)).fileName();
+        while (offset < totalSize)
+        {
+            file.seek(offset);
+            QByteArray dataBlock = file.read(maxBlockSize);
+            FileBlock block = { qint16(dataBlock.size()), offset, totalSize,
+                                fileName.toLocal8Bit(), dataBlock};
+            QByteArray data;
+            QDataStream out(&data, QIODevice::WriteOnly);
+            out.setVersion(QDataStream::Qt_5_12);
+            out << block;
+            QMetaObject::invokeMethod(this, "writeToSocket", Q_ARG(QByteArray, data));
+
+            offset += dataBlock.size();
+            if (time.elapsed() >= 1000 || offset >= totalSize)
+            {
+                time.restart();
+                QMetaObject::invokeMethod(FileManager::instance(), "updateWriteFile",
+                                          Q_ARG(QString, fileName), Q_ARG(int, offset));
+            }
+        }
+
+        file.close();
+    });
+}
+
+void TransferSocket::processRecvBlock()
+{
     static QTime time = QTime::currentTime();
     if (m_recvData.size() > 0)
     {

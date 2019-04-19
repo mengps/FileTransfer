@@ -4,7 +4,7 @@
 #include <QObject>
 
 class ConnectionManager;
-class FileSender;
+class TransferSocket;
 class FileTransfer : public QObject
 {
     Q_OBJECT
@@ -21,7 +21,7 @@ signals:
 
 private:
     FileTransfer(QObject *parent = nullptr);
-    FileSender *m_sender;
+    TransferSocket *m_socket;
     ConnectionManager *m_connection;
 };
 

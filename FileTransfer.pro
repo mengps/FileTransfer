@@ -15,21 +15,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 HEADERS += \
     src/fileapi.h \
     src/fileblock.h \
-    src/filereceiver.h \
-    src/filesender.h \
     src/filetransfer.h \
     src/filemanager.h \
-    src/discoverconnection.h
+    src/discoverconnection.h \
+    src/transfersocket.h \
+    src/connetiomanager.h
 
 SOURCES += \
     src/fileapi.cpp \
     src/fileblock.cpp \
-    src/filereceiver.cpp \
-    src/filesender.cpp \
     src/filetransfer.cpp \
     src/main.cpp \
     src/filemanager.cpp \
-    src/discoverconnection.cpp
+    src/discoverconnection.cpp \
+    src/transfersocket.cpp \
+    src/connetiomanager.cpp
 
 RESOURCES += qml.qrc
 

@@ -132,7 +132,7 @@ Item
         id: separator1
         width: 5
         height: parent.height
-        x: 426
+        x: 380
         color: "#DDD"
         property real minX: 200;
         property real maxX: root.width - 100;

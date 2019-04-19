@@ -3,18 +3,6 @@
 
 #include <QUdpSocket>
 
-struct AccessPoint
-{
-    QHostAddress address;
-    QString name;
-    quint16 port;
-
-    bool operator!=(const AccessPoint &other)
-    {
-        return address != other.address && name != other.name && port != other.port;
-    }
-};
-
 class DiscoverConnection : public QUdpSocket
 {
     Q_OBJECT
@@ -25,7 +13,8 @@ public:
     static DiscoverConnection* instance();
     ~DiscoverConnection();
 
-    AccessPoint getAccessPoint(const QString &name) const;
+    QString getName(const QHostAddress &address) const;
+    QHostAddress getAddress(const QString &name) const;
 
     QString name() const;
     void setName(const QString &name);
@@ -41,7 +30,7 @@ private:
     void processDatagram();
 
     QString m_name = "未命名";
-    QMap<QString, AccessPoint> m_accessPoints;
+    QMap<QString, QHostAddress> m_accessPoints;
 };
 
 #endif // DISCOVERCONNECTION_H

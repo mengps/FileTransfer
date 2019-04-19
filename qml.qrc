@@ -10,5 +10,6 @@
         <file>qml/ResizeMouseArea.qml</file>
         <file>qml/TransferPage.qml</file>
         <file>qml/DiscoverPage.qml</file>
+        <file>qml/FlatInput.qml</file>
     </qresource>
 </RCC>

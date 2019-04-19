@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     qRegisterMetaType<FileInfo>("FileInfo");
+    qRegisterMetaType<QHostAddress>("QHostAddress");
     qmlRegisterType<FileInfo>("an.file", 1, 0, "FileInfo");
 
     QApplication app(argc, argv);

@@ -14,6 +14,7 @@ Window
 
     ResizeMouseArea
     {
+        anchors.fill: parent
         target: root
     }
 
@@ -124,11 +125,12 @@ Window
 
     SwipeView
     {
+        clip: true
         interactive: false
         orientation: Qt.Vertical
         anchors.left: tabBar.right
         anchors.right: parent.right
-        anchors.top: tabBar.top
+        anchors.top: windowTitle.bottom
         anchors.bottom: tabBar.bottom
         currentIndex: tabBar.currentIndex
 
