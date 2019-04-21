@@ -2,6 +2,7 @@
 #include "fileapi.h"
 #include "filemanager.h"
 #include "filetransfer.h"
+#include "scanneritem.h"
 
 #include <QApplication>
 #include <QQmlApplicationEngine>
@@ -14,6 +15,7 @@ int main(int argc, char *argv[])
     qRegisterMetaType<FileInfo>("FileInfo");
     qRegisterMetaType<QHostAddress>("QHostAddress");
     qmlRegisterType<FileInfo>("an.file", 1, 0, "FileInfo");
+    qmlRegisterType<ScannerItem>("an.item", 1, 0, "ScannerItem");
 
     QApplication app(argc, argv);
     QQmlApplicationEngine engine;

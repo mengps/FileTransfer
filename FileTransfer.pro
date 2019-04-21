@@ -19,7 +19,8 @@ HEADERS += \
     src/filemanager.h \
     src/discoverconnection.h \
     src/transfersocket.h \
-    src/connetiomanager.h
+    src/connetiomanager.h \
+    src/scanneritem.h
 
 SOURCES += \
     src/fileapi.cpp \
@@ -29,7 +30,8 @@ SOURCES += \
     src/filemanager.cpp \
     src/discoverconnection.cpp \
     src/transfersocket.cpp \
-    src/connetiomanager.cpp
+    src/connetiomanager.cpp \
+    src/scanneritem.cpp
 
 RESOURCES += qml.qrc
 

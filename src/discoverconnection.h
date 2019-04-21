@@ -20,9 +20,11 @@ public:
     void setName(const QString &name);
 
     Q_INVOKABLE void discover();
+    Q_INVOKABLE void connectToName(const QString &name);
 
 signals:
     void nameChanged();
+    void newConnection(const QString &name);
     void newAccessPoint(const QString &name);
 
 private:
@@ -30,6 +32,7 @@ private:
     void processDatagram();
 
     QString m_name = "未命名";
+    QMap<QString, QHostAddress> m_pendingConnect;
     QMap<QString, QHostAddress> m_accessPoints;
 };
 

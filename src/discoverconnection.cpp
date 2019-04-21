@@ -50,6 +50,11 @@ void DiscoverConnection::discover()
     writeDatagram("[DISCOVER]", QHostAddress::Broadcast, 43801);
 }
 
+void DiscoverConnection::connectToName(const QString &name)
+{
+    writeDatagram("[CONNECT]##" + m_name.toLocal8Bit(), getAddress(name), 43801);
+}
+
 void DiscoverConnection::processDatagram()
 {
     while (hasPendingDatagrams())
@@ -68,6 +73,11 @@ void DiscoverConnection::processDatagram()
                 m_accessPoints[name] = datagram.senderAddress();
                 qDebug() << name << datagram.senderAddress();
                 emit newAccessPoint(name);
+            }
+            if (datagram.data().left(11) == "[CONNECT]##")
+            {
+                QString name = QString::fromLocal8Bit(datagram.data().mid(11));
+                emit newConnection(name);
             }
         }
     }
