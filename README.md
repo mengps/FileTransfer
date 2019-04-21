@@ -1,11 +1,15 @@
 ﻿# FileTransfer
 
-一个用于传输文件的工具
+用于传输文件的工具
+一般为局域网环境下使用(热点)
 
 ------
 ![Image text](demonstrate/FileTransfer.gif)
 
-使用HostAddress::LocalHost测试
+图为本地测试，局域网亦可用
+
+`说明` 扫描使用UDP
+       传输使用TCP
 
 ------
 使用Qml开发
