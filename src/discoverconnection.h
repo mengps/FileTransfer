@@ -32,7 +32,6 @@ private:
     void processDatagram();
 
     QString m_name = "未命名";
-    QMap<QString, QHostAddress> m_pendingConnect;
     QMap<QString, QHostAddress> m_accessPoints;
 };
 
