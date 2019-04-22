@@ -67,14 +67,14 @@ void DiscoverConnection::processDatagram()
                 writeDatagram("[NAME]##" + m_name.toLocal8Bit(), datagram.senderAddress(),
                               quint16(datagram.senderPort()));
             }
-            if (datagram.data().left(8) == "[NAME]##")
+            else if (datagram.data().left(8) == "[NAME]##")
             {
                 QString name = QString::fromLocal8Bit(datagram.data().mid(8));
                 m_accessPoints[name] = datagram.senderAddress();
                 qDebug() << name << datagram.senderAddress();
                 emit newAccessPoint(name);
             }
-            if (datagram.data().left(11) == "[CONNECT]##")
+            else if (datagram.data().left(11) == "[CONNECT]##")
             {
                 QString name = QString::fromLocal8Bit(datagram.data().mid(11));
                 emit newConnection(name);
