@@ -20,6 +20,7 @@ public:
     ~ScannerItem();
 
     Q_INVOKABLE void start();
+    Q_INVOKABLE void stop();
 
 protected:
     virtual void paint(QPainter *painter);

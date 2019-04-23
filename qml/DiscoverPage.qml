@@ -158,6 +158,7 @@ Item
                         onExited: parent.hovered = false;
                         onClicked:
                         {
+                            scanner.stop();
                             discoverCon.connectToName(name);
                             fileTransfer.setAccessPoint(name);
                             root.connected = true;

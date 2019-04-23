@@ -40,6 +40,14 @@ void ScannerItem::start()
     m_updateTimer->start();
 }
 
+void ScannerItem::stop()
+{
+    m_drawable = false;
+    m_angle = 0;
+    m_updateTimer->stop();
+    update(); //清除
+}
+
 void ScannerItem::paint(QPainter *painter)
 {
     painter->setRenderHint(QPainter::Antialiasing);
