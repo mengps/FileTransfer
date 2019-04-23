@@ -110,7 +110,10 @@ void FileManager::updateReadFile(const QString &fileName, qint32 offset)
         {
             it->setOffset(offset);
             if (offset == it->fileSize())
+            {
+                m_readFiles.removeOne(it);
                 emit readFileComplete(fileName);
+            }
             break;
         }
     }
@@ -131,7 +134,10 @@ void FileManager::updateWriteFile(const QString &fileName, qint32 offset)
         {
             it->setOffset(offset);
             if (offset == it->fileSize())
+            {
+                m_writeFiles.removeOne(it);
                 emit writeFileComplete(fileName);
+            }
             break;
         }
     }
