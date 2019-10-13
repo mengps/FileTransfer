@@ -6,8 +6,6 @@
         <file>qml/MyButton.qml</file>
         <file>qml/GlowRectangle.qml</file>
         <file>qml/FileProgress.qml</file>
-        <file>qml/MoveMouseArea.qml</file>
-        <file>qml/ResizeMouseArea.qml</file>
         <file>qml/TransferPage.qml</file>
         <file>qml/DiscoverPage.qml</file>
         <file>qml/FlatInput.qml</file>

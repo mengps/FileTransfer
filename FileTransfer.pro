@@ -1,5 +1,8 @@
 QT += quick widgets network concurrent
+
 CONFIG += c++11
+
+RC_ICONS += image/winIcon.ico
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -18,6 +21,7 @@ HEADERS += \
     src/filetransfer.h \
     src/filemanager.h \
     src/discoverconnection.h \
+    src/framelesswindow.h \
     src/transfersocket.h \
     src/connetiomanager.h \
     src/scanneritem.h
@@ -26,6 +30,7 @@ SOURCES += \
     src/fileapi.cpp \
     src/fileblock.cpp \
     src/filetransfer.cpp \
+    src/framelesswindow.cpp \
     src/main.cpp \
     src/filemanager.cpp \
     src/discoverconnection.cpp \
