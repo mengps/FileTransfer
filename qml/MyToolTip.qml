@@ -1,22 +1,19 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 
-ToolTip
-{
+ToolTip {
     id: root
     font.pointSize: 9
     font.family: "微软雅黑"
     opacity: 0
-    background: Rectangle
-    {
+    background: Rectangle {
         radius: 4
         color: "#AAFFFFFF"
         border.color: "#888"
         border.width: 1
     }
 
-    NumberAnimation
-    {
+    NumberAnimation {
         id: animation
         target: root
         running: false

@@ -37,8 +37,7 @@ QString FileInfo::fileName() const
 
 void FileInfo::setFileName(const QString &fileName)
 {
-    if (fileName != m_fileName)
-    {
+    if (fileName != m_fileName) {
         m_fileName = fileName;
         emit fileNameChanged();
     }
@@ -51,8 +50,7 @@ int FileInfo::offset() const
 
 void FileInfo::setOffset(int offset)
 {
-    if (offset != m_offset)
-    {
+    if (offset != m_offset) {
         m_offset = offset;
         emit offsetChanged();
     }
@@ -65,8 +63,7 @@ int FileInfo::fileSize() const
 
 void FileInfo::setFileSize(int fileSize)
 {
-    if (fileSize != m_fileSize)
-    {
+    if (fileSize != m_fileSize) {
         m_fileSize = fileSize;
         emit fileSizeChanged();
     }
@@ -104,13 +101,10 @@ void FileManager::addReadFile(const QString &fileName, qint32 totalSize)
 
 void FileManager::updateReadFile(const QString &fileName, qint32 offset)
 {
-    for (auto it : m_readFiles)
-    {
-        if (it->fileName() == fileName)
-        {
+    for (auto it : m_readFiles) {
+        if (it->fileName() == fileName) {
             it->setOffset(offset);
-            if (offset == it->fileSize())
-            {
+            if (offset == it->fileSize()) {
                 m_readFiles.removeOne(it);
                 emit readFileComplete(fileName);
             }
@@ -128,13 +122,10 @@ void FileManager::addWriteFile(const QString &fileName, qint32 totalSize)
 
 void FileManager::updateWriteFile(const QString &fileName, qint32 offset)
 {
-    for (auto it : m_writeFiles)
-    {
-        if (it->fileName() == fileName)
-        {
+    for (auto it : m_writeFiles) {
+        if (it->fileName() == fileName) {
             it->setOffset(offset);
-            if (offset == it->fileSize())
-            {
+            if (offset == it->fileSize()) {
                 m_writeFiles.removeOne(it);
                 emit writeFileComplete(fileName);
             }

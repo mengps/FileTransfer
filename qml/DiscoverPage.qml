@@ -2,22 +2,19 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import an.item 1.0
 
-Item
-{
+Item {
     id: root
     clip: true
     property bool connected: false;
     property string connectName: "";
 
-    ScannerItem
-    {
+    ScannerItem {
         id: scanner
         clip: true
         anchors.fill: parent
     }
 
-    GlowRectangle
-    {
+    GlowRectangle {
         id: nameLabel
         radius: 5
         height: 50
@@ -31,15 +28,13 @@ Item
         anchors.top: parent.top
         anchors.topMargin: -radius
 
-        Row
-        {
+        Row {
             width:  270
             height: 28
             anchors.centerIn: parent
             spacing: 20
 
-            Text
-            {
+            Text {
                 id: nameText
                 width:  20
                 height: 28
@@ -47,8 +42,7 @@ Item
                 text: qsTr("昵称：")
             }
 
-            FlatInput
-            {
+            FlatInput {
                 id: nameInput
                 width: 100
                 height: 24
@@ -58,8 +52,7 @@ Item
                 onTextChanged: discoverCon.name = text;
             }
 
-            Text
-            {
+            Text {
                 id: stateLabel
                 width:  140
                 height: 28
@@ -69,36 +62,30 @@ Item
         }
     }
 
-    MyButton
-    {
+    MyButton {
         text: "扫描"
         widthMargin: 12
         heightMargin: 8
         anchors.centerIn: parent
-        onClicked:
-        {
+        onClicked: {
             scanner.start();
             accessPoints.clear();
             discoverCon.discover();
         }
     }
 
-    Connections
-    {
+    Connections {
         target: discoverCon
-        onNewAccessPoint:
-        {
+        onNewAccessPoint: {
             accessPoints.append({"name": name});
         }
-        onNewConnection:
-        {
+        onNewConnection: {
             root.connected = true;
             root.connectName = name;
         }
     }
 
-    Rectangle
-    {
+    Rectangle {
         id: apBackground
         clip: true
         radius: 5
@@ -110,8 +97,7 @@ Item
         anchors.right: parent.right
         anchors.rightMargin: 50
 
-        Text
-        {
+        Text {
             id: apLabel
             anchors.top: parent.top
             anchors.topMargin: 10
@@ -119,8 +105,7 @@ Item
             text: qsTr("扫描到：")
         }
 
-        ListView
-        {
+        ListView {
             id: listView
             clip: true
             anchors.top: apLabel.bottom
@@ -130,19 +115,15 @@ Item
             anchors.leftMargin: 5
             anchors.right: parent.right
             spacing: 4
-            ScrollBar.vertical: ScrollBar
-            {
+            ScrollBar.vertical: ScrollBar {
                 policy: ScrollBar.AsNeeded
             }
-            displaced: Transition
-            {
+            displaced: Transition {
                 NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
             }
             model: ListModel { id: accessPoints }
-            delegate: Component
-            {
-                Rectangle
-                {
+            delegate: Component {
+                Rectangle {
                     width: listView.width - 20
                     height: 32
                     radius: 2
@@ -150,14 +131,12 @@ Item
                     color: hovered ? "#559EF2FA" : "#55556677"
                     property bool hovered: false
 
-                    MouseArea
-                    {
+                    MouseArea {
                         anchors.fill: parent
                         hoverEnabled: true
                         onEntered: parent.hovered = true;
                         onExited: parent.hovered = false;
-                        onClicked:
-                        {
+                        onClicked: {
                             scanner.stop();
                             discoverCon.connectToName(name);
                             fileTransfer.setAccessPoint(name);
@@ -167,8 +146,7 @@ Item
                         }
                     }
 
-                    Text
-                    {
+                    Text {
                         anchors.centerIn: parent
                         text: qsTr(name)
                     }

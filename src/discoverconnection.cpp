@@ -37,8 +37,7 @@ QString DiscoverConnection::name() const
 
 void DiscoverConnection::setName(const QString &name)
 {
-    if (name != m_name)
-    {
+    if (name != m_name) {
         m_name = name;
         emit nameChanged();
     }
@@ -57,25 +56,18 @@ void DiscoverConnection::connectToName(const QString &name)
 
 void DiscoverConnection::processDatagram()
 {
-    while (hasPendingDatagrams())
-    {
+    while (hasPendingDatagrams()) {
         QNetworkDatagram datagram = receiveDatagram();
-        if (!datagram.senderAddress().isNull() && datagram.senderPort() != -1)
-        {
-            if (datagram.data() == "[DISCOVER]")
-            {
+        if (!datagram.senderAddress().isNull() && datagram.senderPort() != -1) {
+            if (datagram.data() == "[DISCOVER]") {
                 writeDatagram("[NAME]##" + m_name.toLocal8Bit(), datagram.senderAddress(),
                               quint16(datagram.senderPort()));
-            }
-            else if (datagram.data().left(8) == "[NAME]##")
-            {
+            } else if (datagram.data().left(8) == "[NAME]##") {
                 QString name = QString::fromLocal8Bit(datagram.data().mid(8));
                 m_accessPoints[name] = datagram.senderAddress();
                 qDebug() << name << datagram.senderAddress();
                 emit newAccessPoint(name);
-            }
-            else if (datagram.data().left(11) == "[CONNECT]##")
-            {
+            } else if (datagram.data().left(11) == "[CONNECT]##") {
                 QString name = QString::fromLocal8Bit(datagram.data().mid(11));
                 emit newConnection(name);
             }

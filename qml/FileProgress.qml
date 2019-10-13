@@ -3,18 +3,15 @@ import QtQuick.Controls 2.12
 import QtQml.Models 2.12
 import an.file 1.0
 
-Item
-{
+Item {
     id: root
 
     property alias model: delegateModel.model
 
-    Component
-    {
+    Component {
         id: delegate
 
-        Rectangle
-        {
+        Rectangle {
             id: wrapper
             width: listView.width - 12
             height: 64
@@ -24,21 +21,18 @@ Item
             property bool complete: false;
             property int itemIndex: DelegateModel.itemsIndex;
 
-            MouseArea
-            {
+            MouseArea {
                 hoverEnabled: true
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
                 anchors.fill: parent
-                onClicked:
-                {
+                onClicked: {
                     //当右键点击并且已经传输完成时才可删除
                     if (mouse.button === Qt.RightButton && wrapper.complete)
                         delegateModel.items.remove(wrapper.itemIndex);
                 }
             }
 
-            Text
-            {
+            Text {
                 id: number
                 color: "red"
                 text: "[" + (wrapper.itemIndex + 1) + "]"
@@ -48,8 +42,7 @@ Item
                 anchors.topMargin: 5
             }
 
-            Text
-            {
+            Text {
                 id: name
                 clip: true
                 height: 16
@@ -61,8 +54,7 @@ Item
                 elide: Text.ElideLeft
             }
 
-            Rectangle
-            {
+            Rectangle {
                 id: progressBar
                 radius: 4
                 clip: true
@@ -73,14 +65,12 @@ Item
                 width: parent.width - 8
                 property real oldRatio: 0;
                 property real ratio: offset / fileSize;
-                onRatioChanged:
-                {
+                onRatioChanged: {
                     name.text = fileName + " (" + fileApi.convertByte((ratio - oldRatio) * fileSize)
                               + "/s)"
                     animation.to = progressBar.ratio * progressBar.width;
                     animation.restart();
-                    if (offset == fileSize)
-                    {
+                    if (offset == fileSize) {
                         wrapper.complete = true;
                         progressRect.width = Qt.binding(function(){ return progressBar.width });
                         progressText.text += " [完成]";
@@ -88,8 +78,7 @@ Item
                     oldRatio = ratio;
                 }
 
-                NumberAnimation
-                {
+                NumberAnimation {
                     id: animation
                     running: false
                     target: progressRect
@@ -98,8 +87,7 @@ Item
                     easing.type: Easing.Linear
                 }
 
-                Rectangle
-                {
+                Rectangle {
                     id: progressRect
                     radius: 4
                     height: parent.height
@@ -108,8 +96,7 @@ Item
                 }
             }
 
-            Text
-            {
+            Text {
                 id: progressText
                 clip: true
                 height: 16
@@ -123,8 +110,7 @@ Item
         }
     }
 
-    ListView
-    {
+    ListView {
         id: listView
         clip: true
         focus: true
@@ -134,22 +120,18 @@ Item
         anchors.leftMargin: 8
         anchors.rightMargin: 2
         spacing: 10
-        displaced: Transition
-        {
+        displaced: Transition {
             NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
         }
-        model: DelegateModel
-        {
+        model: DelegateModel {
             id: delegateModel
             delegate: delegate
         }
-        ScrollBar.vertical: ScrollBar
-        {
+        ScrollBar.vertical: ScrollBar {
             width: 10
             policy: ScrollBar.AsNeeded
         }
-        onModelChanged:
-        {
+        onModelChanged: {
             positionViewAtEnd();
         }
     }

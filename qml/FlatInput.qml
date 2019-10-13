@@ -1,8 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12 as Con212
 
-Item
-{
+Item {
     id: root
     clip: true
 
@@ -21,13 +20,11 @@ Item
     property alias leftPadding: field.leftPadding
     property alias rightPadding: field.rightPadding
 
-    Con212.TextField
-    {
+    Con212.TextField {
         id: field
         anchors.fill: parent
         selectionColor: "#09A3DC"
-        background: GlowRectangle
-        {
+        background: GlowRectangle {
             id: background
             width: root.width
             height: 1

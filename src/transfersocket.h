@@ -1,8 +1,8 @@
 #ifndef TRANSFERSOCKET_H
 #define TRANSFERSOCKET_H
 
-#include <QTcpSocket>
 #include <QHostAddress>
+#include <QTcpSocket>
 
 class QFile;
 class TransferSocket : public QTcpSocket

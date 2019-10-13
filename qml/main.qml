@@ -1,25 +1,19 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Window 2.12
+import an.window 1.0
 
-Window
-{
+FramelessWindow {
     id: root
     visible: true
     width: 640
     height: 480
+    minimumWidth: 640
+    minimumHeight: 480
     title: qsTr("File Transfer")
     color: "#D4E6FF"
-    Component.onCompleted: flags |= Qt.FramelessWindowHint;
 
-    ResizeMouseArea
-    {
-        anchors.fill: parent
-        target: root
-    }
-
-    GlowRectangle
-    {
+    GlowRectangle {
         id: windowTitle
         radius: 5
         z: 5
@@ -31,16 +25,14 @@ Window
         anchors.top: parent.top
         anchors.topMargin: -radius
 
-        Text
-        {
+        Text {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 10
             text: qsTr("文件传输")
         }
 
-        MyButton
-        {
+        MyButton {
             heightMargin: 8
             anchors.right: parent.right
             anchors.top: parent.top
@@ -49,27 +41,23 @@ Window
         }
     }
 
-    Container
-    {
+    Container {
         id: tabBar
         width: 50
         anchors.top: windowTitle.bottom
         anchors.bottom: parent.bottom
 
-        contentItem: ListView
-        {
+        contentItem: ListView {
             interactive: false
             model: tabBar.contentModel
             snapMode: ListView.SnapOneItem
             orientation: ListView.Vertical
         }
 
-        Rectangle
-        {
+        Rectangle {
             width: tabBar.width
             height: tabBar.height / 2
-            color:
-            {
+            color: {
                 if (pressed) return "#88AAAAAA"
                 else if (tabBar.currentIndex == 0)
                     return "#88333333";
@@ -77,15 +65,13 @@ Window
             }
             property bool pressed: false;
 
-            Text
-            {
+            Text {
                 anchors.centerIn: parent
                 font.pointSize: 10
                 text: "扫\n描"
             }
 
-            MouseArea
-            {
+            MouseArea {
                 anchors.fill: parent
                 onPressed: parent.pressed = true;
                 onReleased: parent.pressed = false;
@@ -93,12 +79,10 @@ Window
             }
         }
 
-        Rectangle
-        {
+        Rectangle {
             width: tabBar.width
             height: tabBar.height / 2
-            color:
-            {
+            color: {
                 if (pressed) return "#88AAAAAA"
                 else if (tabBar.currentIndex == 1)
                     return "#88333333";
@@ -106,15 +90,13 @@ Window
             }
             property bool pressed: false;
 
-            Text
-            {
+            Text {
                 anchors.centerIn: parent
                 font.pointSize: 10
                 text: "发\n送"
             }
 
-            MouseArea
-            {
+            MouseArea {
                 anchors.fill: parent
                 onPressed: parent.pressed = true;
                 onReleased: parent.pressed = false;
@@ -123,8 +105,7 @@ Window
         }
     }
 
-    SwipeView
-    {
+    SwipeView {
         clip: true
         interactive: false
         orientation: Qt.Vertical
@@ -134,19 +115,15 @@ Window
         anchors.bottom: tabBar.bottom
         currentIndex: tabBar.currentIndex
 
-        Page
-        {
-            DiscoverPage
-            {
+        Page {
+            DiscoverPage {
                 anchors.fill: parent
             }
         }
 
-        Page
-        {
+        Page {
             clip: true
-            TransferPage
-            {
+            TransferPage {
                 anchors.fill: parent
             }
         }

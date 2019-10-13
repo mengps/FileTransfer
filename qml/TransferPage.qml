@@ -1,11 +1,9 @@
 import QtQuick 2.12
 import QtQuick.Dialogs 1.3
 
-Item
-{
+Item {
 
-    Column
-    {
+    Column {
         height: 400
         anchors.left: parent.left
         anchors.leftMargin: 50
@@ -15,38 +13,32 @@ Item
         spacing: 20
         clip: true
 
-        Item
-        {
+        Item {
             width: parent.width
             height: 300
 
-            FileDialog
-            {
+            FileDialog {
                 id: fileDialog
                 title: "选择文件"
                 folder: shortcuts.desktop
                 nameFilters: ["All files (*)"]
                 selectMultiple: true
-                onAccepted:
-                {
-                    for(var i = 0; i < fileUrls.length; i++)
-                    {
+                onAccepted: {
+                    for(var i = 0; i < fileUrls.length; i++) {
                         console.log(fileUrls[i]);
                         fileView.addFile(fileUrls[i]);
                     }
                 }
             }
 
-            Text
-            {
+            Text {
                 id: sendText
                 anchors.verticalCenter: openFile.verticalCenter
                 anchors.left: parent.left
                 text: qsTr("放入需要发送的文件(可拖入)")
             }
 
-            MyButton
-            {
+            MyButton {
                 id: openFile
                 text: "选择文件"
                 hoverColor: "#F5D2B5"
@@ -55,8 +47,7 @@ Item
                 onClicked: fileDialog.open();
             }
 
-            Rectangle
-            {
+            Rectangle {
                 width: parent.width
                 height: 250
                 anchors.top: sendText.bottom
@@ -65,15 +56,11 @@ Item
                 border.color: "black"
                 radius: 5
 
-                DropArea
-                {
+                DropArea {
                     anchors.fill: parent;
-                    onDropped:
-                    {
-                        if(drop.hasUrls)
-                        {
-                            for(var i = 0; i < drop.urls.length; i++)
-                            {
+                    onDropped: {
+                        if(drop.hasUrls) {
+                            for(var i = 0; i < drop.urls.length; i++) {
                                 console.log(drop.urls[i]);
                                 fileView.addFile(drop.urls[i]);
                             }
@@ -81,42 +68,36 @@ Item
                     }
                 }
 
-                FileView
-                {
+                FileView {
                     id: fileView
                     anchors.fill: parent
                 }
             }
         }
 
-        Item
-        {
+        Item {
             id: name
             width: parent.width
             height: 40
 
-            Row
-            {
+            Row {
                 anchors.centerIn: parent
                 width: deleteButton.width + deleteButton.width + 20
                 height: deleteButton.height
                 spacing: 20
 
-                MyButton
-                {
+                MyButton {
                     id: deleteButton
                     hoverColor: "#F5D2B5"
                     text: "全部清空"
                     onClicked: fileView.cleanup();
                 }
 
-                MyButton
-                {
+                MyButton {
                     id: sendButton
                     hoverColor: "#F5D2B5"
                     text: "发送"
-                    onClicked:
-                    {
+                    onClicked: {
                         for (var i = 0; i < fileView.fileUrls.count; i++)
                             fileTransfer.sendFile(fileView.fileUrls.get(i).fileName);
                         fileView.cleanup();
@@ -127,8 +108,7 @@ Item
     }
 
 
-    Rectangle
-    {
+    Rectangle {
         id: separator1
         width: 5
         height: parent.height
@@ -137,8 +117,7 @@ Item
         property real minX: 200;
         property real maxX: root.width - 100;
 
-        MouseArea
-        {
+        MouseArea {
             anchors.fill: parent
             hoverEnabled: true
             property point startPoint: Qt.point(0, 0);
@@ -147,10 +126,8 @@ Item
             onEntered: cursorShape = Qt.SizeHorCursor;
             onExited: cursorShape = Qt.ArrowCursor;
             onPressed: startPoint = Qt.point(mouseX, mouseY);
-            onPositionChanged:
-            {
-                if(pressed)
-                {
+            onPositionChanged: {
+                if(pressed) {
                     var offsetX = mouse.x - startPoint.x;
                     if ((separator1.x + offsetX) >= separator1.minX && (separator1.x + offsetX) <= separator1.maxX)
                         separator1.x += offsetX;
@@ -159,8 +136,7 @@ Item
         }
     }
 
-    GlowRectangle
-    {
+    GlowRectangle {
         id: sendFileLabel
         z: -1
         radius: 5
@@ -174,15 +150,13 @@ Item
         anchors.top: parent.top
         anchors.topMargin: -radius
 
-        Text
-        {
+        Text {
             anchors.centerIn: parent
             text: qsTr("发送文件")
         }
     }
 
-    FileProgress
-    {
+    FileProgress {
         id: sendFileProgress
         model: fileManager.writeFiles
         anchors.left: separator2.left
@@ -192,8 +166,7 @@ Item
         anchors.bottom: separator2.top
     }
 
-    Rectangle
-    {
+    Rectangle {
         id: separator2
         height: 5
         anchors.left: separator1.right
@@ -203,8 +176,7 @@ Item
         property real minY: 150;
         property real maxY: root.height - 100;
 
-        MouseArea
-        {
+        MouseArea {
             anchors.fill: parent
             hoverEnabled: true
             property point startPoint: Qt.point(0, 0);
@@ -213,10 +185,8 @@ Item
             onEntered: cursorShape = Qt.SizeVerCursor;
             onExited: cursorShape = Qt.ArrowCursor;
             onPressed: startPoint = Qt.point(mouseX, mouseY);
-            onPositionChanged:
-            {
-                if(pressed)
-                {
+            onPositionChanged: {
+                if(pressed) {
                     var offsetY = mouse.y - startPoint.y;
                     if ((separator2.y + offsetY) >= separator2.minY && (separator2.y + offsetY) <= separator2.maxY)
                         separator2.y += offsetY;
@@ -225,8 +195,7 @@ Item
         }
     }
 
-    GlowRectangle
-    {
+    GlowRectangle {
         id: receiveFileLabel
         z: -1
         radius: 5
@@ -240,15 +209,13 @@ Item
         anchors.top: separator2.bottom
         anchors.topMargin: -radius
 
-        Text
-        {
+        Text {
             anchors.centerIn: parent
             text: qsTr("接收文件")
         }
     }
 
-    FileProgress
-    {
+    FileProgress {
         id: receiveFileProgress
         model: fileManager.readFiles
         anchors.left: separator2.left

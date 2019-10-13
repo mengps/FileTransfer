@@ -1,7 +1,6 @@
 import QtQuick 2.12
 
-GlowRectangle
-{
+GlowRectangle {
     id: root
     width: text.width + widthMargin * 2
     height: text.height + heightMargin * 2
@@ -23,8 +22,7 @@ GlowRectangle
     signal entered();
     signal exited();
 
-    Text
-    {
+    Text {
         id: text
         font.family: "微软雅黑"
         color: "#333"
@@ -32,19 +30,16 @@ GlowRectangle
         y: heightMargin
     }
 
-    MouseArea
-    {
+    MouseArea {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
-        onPressed:
-        {
+        onPressed: {
             root.pressed();
             text.x += 1;
             text.y += 1;
         }
-        onReleased:
-        {
+        onReleased: {
             root.released();
             root.clicked();
             text.x -= 1;

@@ -2,28 +2,23 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQml.Models 2.1
 
-Item
-{
+Item {
     id: root
 
     property alias fileUrls: myModel
 
-    function addFile(fileName)
-    {
+    function addFile(fileName) {
         myModel.append({ fileName : fileName });
     }
 
-    function cleanup()
-    {
+    function cleanup() {
         myModel.clear();
     }
 
-    Component
-    {
+    Component {
         id: delegate
 
-        Rectangle
-        {
+        Rectangle {
             width: 60
             height: 60
             radius: 2
@@ -31,8 +26,7 @@ Item
             color: hovered ? "#AAA" : "transparent";
             property bool hovered: false;
 
-            Image
-            {
+            Image {
                 id: image
                 width: 32
                 height: 32
@@ -42,8 +36,7 @@ Item
                 source: fileApi.fileToIcon(fileName)
             }
 
-            Text
-            {
+            Text {
                 id: name
                 width: parent.width - 4
                 anchors.top:image.bottom
@@ -56,14 +49,12 @@ Item
                 elide: Text.ElideRight
             }
 
-            MyToolTip
-            {
+            MyToolTip {
                 visible: parent.hovered
                 text: name.text
             }
 
-            MouseArea
-            {
+            MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
                 onEntered: parent.hovered = true;
@@ -73,8 +64,7 @@ Item
         }
     }
 
-    GridView
-    {
+    GridView {
         id: gridView
         clip: true
         focus: true
@@ -82,17 +72,14 @@ Item
         cellHeight: 65
         anchors.fill: parent
         anchors.margins: 8
-        displaced: Transition
-        {
+        displaced: Transition {
             NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
         }
-        model: ListModel
-        {
+        model: ListModel {
             id: myModel
         }
         delegate: delegate
-        ScrollBar.vertical: ScrollBar
-        {
+        ScrollBar.vertical: ScrollBar {
             policy: ScrollBar.AsNeeded
         }
     }

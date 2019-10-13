@@ -14,13 +14,11 @@ TransferSocket::TransferSocket()
 {
     m_cachePath = qApp->applicationDirPath() + "/FileRecv/";
     QDir dir;
-    if (!dir.exists(m_cachePath))
-    {
+    if (!dir.exists(m_cachePath)) {
         dir.mkpath(m_cachePath);
     }
 
-    connect(this, &QTcpSocket::readyRead, this, [this]()
-    {
+    connect(this, &QTcpSocket::readyRead, this, [this]() {
         m_recvData += readAll();
         processRecvBlock();
     });
@@ -50,8 +48,7 @@ void TransferSocket::sendFile(const QUrl &url)
     if (state() != SocketState::ConnectedState)
         requestNewConnection();
 
-    QtConcurrent::run([this, url]()
-    {
+    QtConcurrent::run([this, url]() {
         QTime time;
         time.start();
         QFile file(QQmlFile::urlToLocalFileOrQrc(url));
@@ -60,8 +57,7 @@ void TransferSocket::sendFile(const QUrl &url)
         qint32 offset = 0;
         qint32 totalSize = qint32(file.size());
         QString fileName = QFileInfo(QQmlFile::urlToLocalFileOrQrc(url)).fileName();
-        while (offset < totalSize)
-        {
+        while (offset < totalSize) {
             file.seek(offset);
             QByteArray dataBlock = file.read(maxBlockSize);
             FileBlock block = { qint16(dataBlock.size()), offset, totalSize,
@@ -73,8 +69,7 @@ void TransferSocket::sendFile(const QUrl &url)
             QMetaObject::invokeMethod(this, "writeToSocket", Q_ARG(QByteArray, data));
 
             offset += dataBlock.size();
-            if (time.elapsed() >= 1000 || offset >= totalSize)
-            {
+            if (time.elapsed() >= 1000 || offset >= totalSize) {
                 time.restart();
                 QMetaObject::invokeMethod(FileManager::instance(), "updateWriteFile",
                                           Q_ARG(QString, fileName), Q_ARG(int, offset));
@@ -88,8 +83,7 @@ void TransferSocket::sendFile(const QUrl &url)
 void TransferSocket::processRecvBlock()
 {
     static QTime time = QTime::currentTime();
-    if (m_recvData.size() > 0)
-    {
+    if (m_recvData.size() > 0) {
         FileBlock block;
         QDataStream in(&m_recvData, QIODevice::ReadOnly);
         in.setVersion(QDataStream::Qt_5_12);
@@ -100,8 +94,7 @@ void TransferSocket::processRecvBlock()
 
         QString fileName = QString::fromLocal8Bit(block.fileName);
 
-        if (!m_recvFiles[fileName])
-        {
+        if (!m_recvFiles[fileName]) {
             QFile *file = new QFile(m_cachePath + fileName);
             file->open(QIODevice::WriteOnly);
             m_recvFiles[fileName] = file;
@@ -111,15 +104,13 @@ void TransferSocket::processRecvBlock()
             QThread::msleep(100);
         }
 
-        if (m_recvFileSize[fileName] < block.fileSize)
-        {
+        if (m_recvFileSize[fileName] < block.fileSize) {
             m_recvFileSize[fileName] += block.blockSize;
             m_recvFiles[fileName]->write(block.dataBlock);
             qDebug() << block;
         }
 
-        if (m_recvFileSize[fileName] == block.fileSize)
-        {
+        if (m_recvFileSize[fileName] == block.fileSize) {
             m_recvFiles[fileName]->close();
             m_recvFiles[fileName]->deleteLater();
             m_recvFiles.remove(fileName);
@@ -128,8 +119,7 @@ void TransferSocket::processRecvBlock()
                                       Q_ARG(QString, fileName), Q_ARG(int, block.fileSize));
         }
 
-        if (time.elapsed() >= 1000)
-        {
+        if (time.elapsed() >= 1000) {
             time.restart();
             QMetaObject::invokeMethod(FileManager::instance(), "updateReadFile",
                                       Q_ARG(QString, fileName), Q_ARG(int, m_recvFileSize[fileName]));

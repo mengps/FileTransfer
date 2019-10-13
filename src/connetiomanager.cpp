@@ -26,10 +26,9 @@ void ConnectionManager::incomingConnection(qintptr handle)
     QThread *thread = new QThread;
     connect(thread, &QThread::finished, thread, &QThread::deleteLater);
     TransferSocket *socket = new TransferSocket;
-    if (!socket->setSocketDescriptor(handle))
+    if (!socket->setSocketDescriptor(handle)) {
         qDebug() << "Socket Error: " << socket->errorString();
-    else
-    {
+    } else {
         emit hasNewConnection(socket);
         qDebug() << "Connected Socket: " << handle;
     }

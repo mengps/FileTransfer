@@ -1,8 +1,7 @@
 import QtQuick 2.12
 import QtGraphicalEffects 1.12
 
-Item
-{
+Item {
     id: root
 
     property alias color: backRect.color;
@@ -12,8 +11,7 @@ Item
     property alias glowColor: backEffect.color;
     property alias glowRadius: backEffect.glowRadius;
 
-    RectangularGlow
-    {
+    RectangularGlow {
         id: backEffect
         antialiasing: true
         anchors.fill: backRect
@@ -22,8 +20,7 @@ Item
         cornerRadius: backRect.radius + glowRadius
     }
 
-    Rectangle
-    {
+    Rectangle {
         id: backRect
         antialiasing: true
         anchors.fill: parent

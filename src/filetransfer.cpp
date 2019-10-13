@@ -12,8 +12,7 @@ FileTransfer::FileTransfer(QObject *parent)
     : QObject (parent)
 {
     m_connection = new ConnectionManager(this);
-    connect(m_connection, &ConnectionManager::hasNewConnection, this, [this](QTcpSocket *socket)
-    {
+    connect(m_connection, &ConnectionManager::hasNewConnection, this, [this](QTcpSocket *socket) {
         if (m_socket)
             m_socket->deleteLater();
         m_socket = qobject_cast<TransferSocket *>(socket);

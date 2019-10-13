@@ -14,11 +14,9 @@ ScannerItem::ScannerItem(QQuickItem *parent)
     connect(m_updateTimer, &QTimer::timeout, this, [this](){ update(); });
 
     QTimer *timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, [this]
-    {
+    connect(timer, &QTimer::timeout, this, [this] {
         m_points.clear();
-        for(int i = 0; i < 5; ++i)
-        {
+        for(int i = 0; i < 5; ++i) {
             int alpha = qrand() % 100 + 40;
             int px = qrand() % int(width());
             int py = qrand() % int(height());
@@ -65,8 +63,7 @@ void ScannerItem::paint(QPainter *painter)
     painter->drawEllipse(center, min / 3, min / 3);
     painter->drawEllipse(center, min / 6, min / 6);
 
-    if (m_drawable)
-    {
+    if (m_drawable) {
         int diff = int(qAbs(width() - height()) / 2);
         QConicalGradient gradient(width() / 2, height() / 2, m_angle + 180);
         gradient.setColorAt(0.1, QColor(15, 45, 188, 200));
@@ -77,8 +74,7 @@ void ScannerItem::paint(QPainter *painter)
             painter->drawPie(diff, 0, min, min, m_angle * 16, 60 * 16);
         else painter->drawPie(0, diff, min, min, m_angle * 16, 60 * 16);
 
-        for(int i = 0; i < 5; ++i)
-        {
+        for(int i = 0; i < 5; ++i) {
             painter->setBrush(QBrush(QColor(15, 45, 188, m_points.at(i).alpha)));
             painter->drawEllipse(m_points.at(i).point, 7, 7);
         }
