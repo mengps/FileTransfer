@@ -1,5 +1,5 @@
-debug/
 release/
+debug/
 *.user
 *.Debug
 *.Release
