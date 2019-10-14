@@ -10,7 +10,7 @@ FramelessWindow::FramelessWindow(QWindow *parent)
 
    //在这里改变默认移动区域
    //只有鼠标在移动区域内，才能移动窗口
-   MoveArea = {8, 8, width() - 16, 100};
+   MoveArea = {8, 8, width() - 16, 40};
    connect(this, &QQuickWindow::widthChanged, this, [](int arg){
        MoveArea.setWidth(arg - 16);
    });
