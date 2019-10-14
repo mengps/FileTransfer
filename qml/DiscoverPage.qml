@@ -80,6 +80,7 @@ Item {
             accessPoints.append({"name": name});
         }
         onNewConnection: {
+            scanner.stop();
             root.connected = true;
             root.connectName = name;
         }
