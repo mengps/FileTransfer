@@ -5,6 +5,7 @@
 一般为局域网环境下使用(热点)
 
 ------
+
 ![Image text](demonstrate/FileTransfer.gif)
 
 图为本地测试，局域网亦可用
@@ -12,6 +13,12 @@
 `说明` 扫描使用UDP 
 
 `说明` 传输使用TCP
+
+------
+
+### 许可证
+
+   使用 `MIT LICENSE`
 
 ------
 
