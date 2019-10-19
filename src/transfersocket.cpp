@@ -8,38 +8,55 @@
 #include <QHostAddress>
 #include <QQmlFile>
 
-const int maxBlockSize = 1024;
+static const int maxBlockSize = 1024;
+
+struct File
+{
+    QFile *file;
+    qint32 size;
+};
+
+class TransferSocketPrivate
+{
+public:
+    int m_maxTaskNum = 8;
+    QString m_cachePath;
+    QByteArray m_recvData;
+    QMap<QString, File> m_recvFiles;
+    QHostAddress m_destAddress;
+};
 
 TransferSocket::TransferSocket()
 {
-    m_cachePath = qApp->applicationDirPath() + "/FileRecv/";
+    d = new TransferSocketPrivate;
+    d->m_cachePath = qApp->applicationDirPath() + "/FileRecv/";
     QDir dir;
-    if (!dir.exists(m_cachePath)) {
-        dir.mkpath(m_cachePath);
+    if (!dir.exists(d->m_cachePath)) {
+        dir.mkpath(d->m_cachePath);
     }
 
     connect(this, &QTcpSocket::readyRead, this, [this]() {
-        m_recvData += readAll();
+        d->m_recvData += readAll();
         processRecvBlock();
     });
 }
 
 TransferSocket::~TransferSocket()
 {
-
+    delete d;
 }
 
 void TransferSocket::requestNewConnection()
 {
     abort();
-    connectToHost(m_destAddress, 43800);
+    connectToHost(d->m_destAddress, 43800);
     waitForConnected(5000);
 }
 
 void TransferSocket::setDestAddress(const QHostAddress &address)
 {
-    if (m_destAddress != address)
-        m_destAddress = address;
+    if (d->m_destAddress != address)
+        d->m_destAddress = address;
     requestNewConnection();
 }
 
@@ -83,9 +100,9 @@ void TransferSocket::sendFile(const QUrl &url)
 void TransferSocket::processRecvBlock()
 {
     static QTime time = QTime::currentTime();
-    if (m_recvData.size() > 0) {
+    if (d->m_recvData.size() > 0) {
         FileBlock block;
-        QDataStream in(&m_recvData, QIODevice::ReadOnly);
+        QDataStream in(&d->m_recvData, QIODevice::ReadOnly);
         in.setVersion(QDataStream::Qt_5_12);
         in >> block;
 
@@ -94,27 +111,26 @@ void TransferSocket::processRecvBlock()
 
         QString fileName = QString::fromLocal8Bit(block.fileName);
 
-        if (!m_recvFiles[fileName]) {
-            QFile *file = new QFile(m_cachePath + fileName);
+        if (!d->m_recvFiles[fileName].file) {
+            QFile *file = new QFile(d->m_cachePath + fileName);
             file->open(QIODevice::WriteOnly);
-            m_recvFiles[fileName] = file;
-            m_recvFileSize[fileName] = 0;
+            d->m_recvFiles[fileName].file = file;
+            d->m_recvFiles[fileName].size = 0;
             QMetaObject::invokeMethod(FileManager::instance(), "addReadFile",
                                       Q_ARG(QString, fileName), Q_ARG(int, block.fileSize));
             QThread::msleep(100);
         }
 
-        if (m_recvFileSize[fileName] < block.fileSize) {
-            m_recvFileSize[fileName] += block.blockSize;
-            m_recvFiles[fileName]->write(block.dataBlock);
+        if (d->m_recvFiles[fileName].size < block.fileSize) {
+            d->m_recvFiles[fileName].size += block.blockSize;
+            d->m_recvFiles[fileName].file->write(block.dataBlock);
             qDebug() << block;
         }
 
-        if (m_recvFileSize[fileName] == block.fileSize) {
-            m_recvFiles[fileName]->close();
-            m_recvFiles[fileName]->deleteLater();
-            m_recvFiles.remove(fileName);
-            m_recvFileSize.remove(fileName);
+        if (d->m_recvFiles[fileName].size == block.fileSize) {
+            d->m_recvFiles[fileName].file->close();
+            d->m_recvFiles[fileName].file->deleteLater();
+            d->m_recvFiles.remove(fileName);
             QMetaObject::invokeMethod(FileManager::instance(), "updateReadFile",
                                       Q_ARG(QString, fileName), Q_ARG(int, block.fileSize));
         }
@@ -122,11 +138,11 @@ void TransferSocket::processRecvBlock()
         if (time.elapsed() >= 1000) {
             time.restart();
             QMetaObject::invokeMethod(FileManager::instance(), "updateReadFile",
-                                      Q_ARG(QString, fileName), Q_ARG(int, m_recvFileSize[fileName]));
+                                      Q_ARG(QString, fileName), Q_ARG(int, d->m_recvFiles[fileName].size));
         }
 
-        m_recvData.remove(0, block.size());
-        if (m_recvData.size() > 0)  //如果还有则继续处理
+        d->m_recvData.remove(0, block.size());
+        if (d->m_recvData.size() > 0)  //如果还有则继续处理
             processRecvBlock();
     }
 }
