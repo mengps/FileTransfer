@@ -25,7 +25,7 @@ struct FileBlock
                int(sizeof(fileSize)) +
                fileName.size() +
                dataBlock.size() +
-               2 * 4;       //有两个QByteArray，每个会在前面加4字节大小
+               2 * int(sizeof(int));       //有两个QByteArray，每个会在前面加int大小
     }
 };
 

@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QCoreApplication::setOrganizationName("FileTransfer");
-    QCoreApplication::setOrganizationDomain("filetransfer.com");
+    QCoreApplication::setOrganizationDomain("mps.filetransfer.app");
 
     qRegisterMetaType<FileInfo>("FileInfo");
     qRegisterMetaType<QHostAddress>("QHostAddress");

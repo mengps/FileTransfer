@@ -122,7 +122,6 @@ FramelessWindow {
         }
 
         Page {
-            clip: true
             TransferPage {
                 anchors.fill: parent
             }

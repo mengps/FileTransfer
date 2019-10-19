@@ -25,7 +25,6 @@ Item {
                 selectMultiple: true
                 onAccepted: {
                     for(var i = 0; i < fileUrls.length; i++) {
-                        console.log(fileUrls[i]);
                         fileView.addFile(fileUrls[i]);
                     }
                 }

@@ -1,5 +1,4 @@
 #include "discoverconnection.h"
-
 #include <QNetworkDatagram>
 
 DiscoverConnection::DiscoverConnection(QObject *parent)
@@ -65,7 +64,7 @@ void DiscoverConnection::processDatagram()
             } else if (datagram.data().left(8) == "[NAME]##") {
                 QString name = QString::fromLocal8Bit(datagram.data().mid(8));
                 m_accessPoints[name] = datagram.senderAddress();
-                qDebug() << name << datagram.senderAddress();
+                qDebug().nospace() << "AccessPoint: [" << name << "]===[" << datagram.senderAddress() << "]";
                 emit newAccessPoint(name);
             } else if (datagram.data().left(11) == "[CONNECT]##") {
                 QString name = QString::fromLocal8Bit(datagram.data().mid(11));

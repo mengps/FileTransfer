@@ -53,9 +53,9 @@ void ScannerItem::paint(QPainter *painter)
 
     //格子
     for(int i = 0; i < width(); i += 20)
-        painter->drawLine(i + 0.5, 0, i + 0.5, height());
+        painter->drawLine(QPointF(i + 0.5, 0), QPointF(i + 0.5, height()));
     for(int j = 0; j < height(); j += 20)
-        painter->drawLine(0, j + 0.5, width(), j + 0.5);
+        painter->drawLine(QPointF(0, j + 0.5), QPointF(width(), j + 0.5));
 
     int min = int(qMin(width(), height()));
     QPoint center(int(width() / 2), int(height() / 2));

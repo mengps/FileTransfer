@@ -104,6 +104,9 @@ Item {
             anchors.topMargin: 10
             anchors.horizontalCenter: parent.horizontalCenter
             text: qsTr("扫描到：")
+            color: "red"
+            font.bold: true
+            font.pointSize: 11
         }
 
         ListView {

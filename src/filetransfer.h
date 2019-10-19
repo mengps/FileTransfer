@@ -21,6 +21,7 @@ signals:
 
 private:
     FileTransfer(QObject *parent = nullptr);
+
     TransferSocket *m_socket;
     ConnectionManager *m_connection;
 };
