@@ -70,6 +70,12 @@ void FileInfo::setFileSize(int fileSize)
 }
 
 
+FileManager* FileManager::instance()
+{
+    static FileManager fileManager;
+    return &fileManager;
+}
+
 FileManager::FileManager(QObject *parent)
     : QObject (parent)
 {
@@ -96,19 +102,18 @@ void FileManager::addReadFile(const QString &fileName, qint32 totalSize)
 {
     FileInfo *info = new FileInfo(fileName, 0, totalSize, this);
     m_readFiles.append(info);
+    m_filesTable[fileName] = info;
     emit readFilesChanged();
 }
 
 void FileManager::updateReadFile(const QString &fileName, qint32 offset)
 {
-    for (auto it : m_readFiles) {
-        if (it->fileName() == fileName) {
-            it->setOffset(offset);
-            if (offset == it->fileSize()) {
-                m_readFiles.removeOne(it);
-                emit readFileComplete(fileName);
-            }
-            break;
+    FileInfo *info = m_filesTable[fileName];
+    if (info) {
+        info->setOffset(offset);
+        if (offset == info->fileSize()) {
+            m_filesTable.remove(fileName);
+            emit writeFileComplete(fileName);
         }
     }
 }
@@ -117,25 +122,18 @@ void FileManager::addWriteFile(const QString &fileName, qint32 totalSize)
 {
     FileInfo *info = new FileInfo(fileName, 0, totalSize, this);
     m_writeFiles.append(info);
+    m_filesTable[fileName] = info;
     emit writeFilesChanged();
 }
 
 void FileManager::updateWriteFile(const QString &fileName, qint32 offset)
 {
-    for (auto it : m_writeFiles) {
-        if (it->fileName() == fileName) {
-            it->setOffset(offset);
-            if (offset == it->fileSize()) {
-                m_writeFiles.removeOne(it);
-                emit writeFileComplete(fileName);
-            }
-            break;
+    FileInfo *info = m_filesTable[fileName];
+    if (info) {
+        info->setOffset(offset);
+        if (offset == info->fileSize()) {
+            m_filesTable.remove(fileName);
+            emit writeFileComplete(fileName);
         }
     }
-}
-
-FileManager* FileManager::instance()
-{
-    static FileManager fileManager;
-    return &fileManager;
 }

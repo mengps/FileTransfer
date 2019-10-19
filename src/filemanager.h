@@ -68,6 +68,7 @@ signals:
 private:
     FileManager(QObject *parent = nullptr);
 
+    QHash<QString, FileInfo*> m_filesTable;
     QList<FileInfo *> m_readFiles;
     QQmlListProperty<FileInfo> *m_readFilesProxy;
     QList<FileInfo *> m_writeFiles;
