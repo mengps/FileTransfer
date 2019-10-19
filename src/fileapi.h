@@ -14,7 +14,6 @@ public:
     Q_INVOKABLE QString fileToIcon(const QUrl &url);
     Q_INVOKABLE QString fileName(const QUrl &url);
     Q_INVOKABLE QString convertByte(int byte);
-
 };
 
 #endif // FILEAPI_H

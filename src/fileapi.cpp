@@ -42,6 +42,5 @@ QString FileApi::convertByte(int byte)
         return QString::asprintf("%.2fMB", byte / (1024.0 * 1024.0));
     else if (byte > (1024))
         return QString::asprintf("%.2fKB", byte / (1024.0));
-    else
-        return QString::asprintf("%d bytes", int(byte));
+    else return QString::asprintf("%d bytes", int(byte));
 }

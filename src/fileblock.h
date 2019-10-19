@@ -13,13 +13,11 @@ struct FileBlock
     QByteArray fileName;
     QByteArray dataBlock;
 
-    bool isEmpty() const
-    {
+    bool isEmpty() const {
         return fileName.isEmpty() || dataBlock.isEmpty();
     }
 
-    int size() const
-    {
+    int size() const {
         return int(sizeof(blockSize)) +
                int(sizeof(offset)) +
                int(sizeof(fileSize)) +
@@ -29,8 +27,8 @@ struct FileBlock
     }
 };
 
-QDataStream& operator>>(QDataStream &in, FileBlock &block);
-QDataStream& operator<<(QDataStream &out, FileBlock &block);
-QDebug operator<<(QDebug debug, const FileBlock &block);
+extern QDataStream& operator>>(QDataStream &in, FileBlock &block);
+extern QDataStream& operator<<(QDataStream &out, FileBlock &block);
+extern QDebug operator<<(QDebug debug, const FileBlock &block);
 
 #endif // FILEBLOCK_H
