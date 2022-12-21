@@ -1,5 +1,5 @@
 #include "discoverconnection.h"
-#include "connetiomanager.h"
+#include "connectionmanager.h"
 #include "filemanager.h"
 #include "filetransfer.h"
 #include "transfersocket.h"

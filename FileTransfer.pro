@@ -2,7 +2,9 @@ QT += quick widgets network concurrent
 
 CONFIG += c++11
 
-RC_ICONS += image/winIcon.ico
+win32{
+    RC_ICONS += image/winIcon.ico
+}
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -16,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 HEADERS += \
+    src/connectionmanager.h \
     src/fileapi.h \
     src/fileblock.h \
     src/filetransfer.h \
@@ -23,10 +26,10 @@ HEADERS += \
     src/discoverconnection.h \
     src/framelesswindow.h \
     src/transfersocket.h \
-    src/connetiomanager.h \
     src/scanneritem.h
 
 SOURCES += \
+    src/connectionmanager.cpp \
     src/fileapi.cpp \
     src/fileblock.cpp \
     src/filetransfer.cpp \
@@ -35,16 +38,9 @@ SOURCES += \
     src/filemanager.cpp \
     src/discoverconnection.cpp \
     src/transfersocket.cpp \
-    src/connetiomanager.cpp \
     src/scanneritem.cpp
 
 RESOURCES += qml.qrc
-
-# Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =
-
-# Additional import path used to resolve QML modules just for Qt Quick Designer
-QML_DESIGNER_IMPORT_PATH =
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

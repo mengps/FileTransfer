@@ -1,7 +1,7 @@
 #include "discoverconnection.h"
 #include "fileblock.h"
 #include "filemanager.h"
-#include "connetiomanager.h"
+#include "connectionmanager.h"
 #include "transfersocket.h"
 
 #include <QApplication>
